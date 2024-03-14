@@ -33,7 +33,9 @@ if __name__ == '__main__':
 
     # save a png file of the charted data
     series_name = series_df.columns[-1]
+    plt.figure(figsize=(12, 8))
     sns.lineplot(x='date', y=series_name, data=series_df)
-    plt.figure(figsize=(3, 3))
+    
+    plt.title(series_name)
     plt.savefig("seaborn_plot.png")
     plt.close()
