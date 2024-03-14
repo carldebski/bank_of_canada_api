@@ -1,5 +1,6 @@
-# This module contains api data retrieval functions for the Bank of Canada's Valet API. 
-
+""" 
+This module contains api data retrieval functions for the Bank of Canada's Valet API.
+"""
 
 import requests
 import pandas as pd
@@ -20,40 +21,40 @@ def get_series_data(series, start_date, end_date):
     - dataframe: series data for the selected time period
     - csv: saves the data in a local csv file (api_data_[SERIES].csv) 
     """
-    
 
-    url = "https://www.bankofcanada.ca/valet/observations/{}/json?start_date={}&end_date={}".format(series, start_date, end_date)
-    desc_url = "https://www.bankofcanada.ca/valet/series/{}/json".format(series)
-    
+
+    url = f"https://www.bankofcanada.ca/valet/observations/{series}/json?start_date={start_date}&end_date={end_date}"
+    desc_url = f"https://www.bankofcanada.ca/valet/series/{series}/json"
+
     # return data observations and variable description 
     try:
         response = requests.get(url)
-        
+
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
             json_data = response.json()['observations']
             df = pd.DataFrame(json_data)
-            
+
             try:
                 response = requests.get(desc_url)
 
                 # Check if the request was successful (status code 200)
                 if response.status_code == 200:
                     desc = response.json()['seriesDetails']['description']
-            
+
                 else:
                     print("Request error: {}".format(response.status_code))
-            
+
             except:
                 print('Error: No response')
 
             df.columns = ['date', desc]
             df.to_csv('api_data_{}.csv'.format(series))
             return df
-        
+
         else:
             print("Request error: {}".format(response.status_code))
-    
+
     except:
         print('Error: No response')
         return None
@@ -61,7 +62,7 @@ def get_series_data(series, start_date, end_date):
 
 if __name__ == '__main__':
     import argparse
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument('series', help='Series Name')
     parser.add_argument('start_date', help='Start Date (YYYY-MM-DD)')

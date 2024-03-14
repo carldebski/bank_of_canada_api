@@ -8,19 +8,19 @@ Parameters:
 - end_date (str): end of the historical period (format YYYY-MM-DD)
 
 Returns:
-- image (png): saves a png file of series  
+- image (png): saves a png file of series
 """
 
-
+import seaborn as sns
+import matplotlib.pyplot as plt
 from get_boc_data import get_series_data
 from clean_data import clean_data
-import seaborn as sns 
-import matplotlib.pyplot as plt
+
 
 
 if __name__ == '__main__':
     import argparse
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument('series', help='file path (csv)')
     parser.add_argument('start_date', help='file path (csv)')
