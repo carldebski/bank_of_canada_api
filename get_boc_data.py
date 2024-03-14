@@ -41,7 +41,7 @@ def get_series_data(series, start_date, end_date):
         df.columns = ['date', desc]
     except requests.exceptions.RequestException as e:
         print(f"An error occured {e}")
-    
+
     df.to_csv(f"api_data_{series}.csv")
 
     return df
