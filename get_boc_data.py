@@ -9,7 +9,7 @@ def get_series_data(series, start_date, end_date):
     Return json data from Bank of Canada series using the Bank of Canada Valet API 
     API Docs: https://www.bankofcanada.ca/valet/docs
     Series Observation API: https://www.bankofcanada.ca/valet/observations/...
-    Series Description API: 
+    Series Description API: "https://www.bankofcanada.ca/valet/series/...
 
     Parameters:
     - series (str): Bank of Canada Series name
