@@ -35,7 +35,6 @@ if __name__ == '__main__':
     series_name = series_df.columns[-1]
     plt.figure(figsize=(12, 8))
     sns.lineplot(x='date', y=series_name, data=series_df)
-    
     plt.title(series_name)
     plt.savefig("seaborn_plot.png")
     plt.close()
