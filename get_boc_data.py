@@ -2,7 +2,8 @@
 This module contains api data retrieval functions for the Bank of Canada's Valet API.
 """
 
-
+import requests
+import pandas as pd
 
 def get_series_data(series, start_date, end_date):
     """
@@ -45,26 +46,21 @@ def get_series_data(series, start_date, end_date):
                 else:
                     print(f"Request error: {response.status_code}")
 
-            except:
-                print('Error: No response')
+            except Exception as e:
+                print('An error occured')
 
             df.columns = ['date', desc]
             df.to_csv(f"api_data_{series}.csv")
             return df
 
-        else:
-            print(f"Request error: {response.status_code}")
-
-    except:
-        print('Error: No response')
+    except Exception as e:
+        print('An error occured')
 
 
 
 if __name__ == '__main__':
     import argparse
-    import requests
-    import pandas as pd
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument('series', help='Series Name')
     parser.add_argument('start_date', help='Start Date (YYYY-MM-DD)')
