@@ -49,7 +49,7 @@ def get_series_data(series, start_date, end_date):
             json_data = response.json()['observations']
             df = pd.DataFrame(json_data)
             df.columns = ['date', desc]
-            df.to_csv(f"api_data_{series}.csv")
+
             return df
 
     except requests.exceptions.RequestException as e:
