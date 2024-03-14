@@ -30,32 +30,21 @@ def get_series_data(series, start_date, end_date):
     # return data observations and variable description
     try:
         response = requests.get(url, timeout=5)
-
-        # Check if the request was successful (status code 200)
-        if response.status_code == 200:
-            try:
-                response = requests.get(desc_url, timeout=5)
-
-                # Check if the request was successful (status code 200)
-                if response.status_code == 200:
-                    desc = response.json()['seriesDetails']['description']
-
-                else:
-                    print(f"Request error: {response.status_code}")
-
-            except requests.exceptions.RequestException as e:
-                print(f"An error occured {e}")
-
-            json_data = response.json()['observations']
-            df = pd.DataFrame(json_data)
-            df.columns = ['date', desc]
-
-            return df
-
+        json_data = response.json()['observations']
+        df = pd.DataFrame(json_data)
     except requests.exceptions.RequestException as e:
         print(f"An error occured {e}")
 
+    try:
+        response = requests.get(desc_url, timeout=5)
+        desc = response.json()['seriesDetails']['description']
+        df.columns = ['date', desc]
+    except requests.exceptions.RequestException as e:
+        print(f"An error occured {e}")
+    
+    df.to_csv(f"api_data_{series}.csv")
 
+    return df
 
 
 if __name__ == '__main__':
