@@ -25,6 +25,7 @@ def get_series_data(series, start_date, end_date):
     url = "https://www.bankofcanada.ca/valet/observations/{}/json?start_date={}&end_date={}".format(series, start_date, end_date)
     desc_url = "https://www.bankofcanada.ca/valet/series/{}/json".format(series)
     
+    # return data observations and variable description 
     try:
         response = requests.get(url)
         
