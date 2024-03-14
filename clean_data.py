@@ -17,7 +17,7 @@ def clean_data(df):
 
     df['date'] = pd.to_datetime(df['date'])
     col_name = df.columns[-1]
-    df[col_name] = [i['v'] for i in df.iloc[:, -1]]
+    df[col_name] = [float(i['v']) for i in df.iloc[:, -1]]
 
     return df
 
