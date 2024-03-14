@@ -15,9 +15,9 @@ def clean_data(df):
     - dataframe: cleaned dataframe
     """
 
-    df.columns = ['date', 'fed_fund_rate']
     df['date'] = pd.to_datetime(df['date'])
-    df['fed_fund_rate'] = [i['v'] for i in df['fed_fund_rate']]
+    col_name = df.columns[-1]
+    df[col_name] = [i['v'] for i in df.iloc[:, -1]]
 
     return df
 

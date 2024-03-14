@@ -9,6 +9,7 @@ def get_series_data(series, start_date, end_date):
     Return json data from Bank of Canada series using the Bank of Canada Valet API 
     API Docs: https://www.bankofcanada.ca/valet/docs
     Series Observation API: https://www.bankofcanada.ca/valet/observations/...
+    Series Description API: 
 
     Parameters:
     - series (str): Bank of Canada Series name
@@ -22,6 +23,7 @@ def get_series_data(series, start_date, end_date):
     
 
     url = "https://www.bankofcanada.ca/valet/observations/{}/json?start_date={}&end_date={}".format(series, start_date, end_date)
+    desc_url = "https://www.bankofcanada.ca/valet/series/{}/json".format(series)
     
     try:
         response = requests.get(url)
@@ -30,8 +32,24 @@ def get_series_data(series, start_date, end_date):
         if response.status_code == 200:
             json_data = response.json()['observations']
             df = pd.DataFrame(json_data)
+            
+            try:
+                response = requests.get(desc_url)
+
+                # Check if the request was successful (status code 200)
+                if response.status_code == 200:
+                    desc = response.json()['seriesDetails']['description']
+            
+                else:
+                    print("Request error: {}".format(response.status_code))
+            
+            except:
+                print('Error: No response')
+
+            df.columns = ['date', desc]
             df.to_csv('api_data_{}.csv'.format(series))
             return df
+        
         else:
             print("Request error: {}".format(response.status_code))
     

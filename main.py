@@ -28,10 +28,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # retrieve and clean API data
-    fed_fund_rates = get_series_data(args.series, args.start_date, args.end_date)
-    fed_fund_rates = clean_data(fed_fund_rates)
+    series_df = get_series_data(args.series, args.start_date, args.end_date)
+    series_df = clean_data(series_df)
 
     # save a png file of the charted data
-    sns.lineplot(x='date', y='fed_fund_rate', data=fed_fund_rates)
+    series_name = series_df.columns[-1]
+    sns.lineplot(x='date', y=series_name, data=series_df)
+    plt.figure(figsize=(3, 3))
     plt.savefig("seaborn_plot.png")
     plt.close()
