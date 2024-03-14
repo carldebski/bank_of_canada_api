@@ -33,9 +33,6 @@ def get_series_data(series, start_date, end_date):
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
-            json_data = response.json()['observations']
-            df = pd.DataFrame(json_data)
-
             try:
                 response = requests.get(desc_url, timeout=5)
 
@@ -49,8 +46,10 @@ def get_series_data(series, start_date, end_date):
             except requests.exceptions.RequestException as e:
                 print(f"An error occured {e}")
 
+            json_data = response.json()['observations']
+            df = pd.DataFrame(json_data)
             df.columns = ['date', desc]
-            #df.to_csv(f"api_data_{series}.csv")
+            df.to_csv(f"api_data_{series}.csv")
             return df
 
     except requests.exceptions.RequestException as e:
