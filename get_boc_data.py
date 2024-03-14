@@ -2,8 +2,7 @@
 This module contains api data retrieval functions for the Bank of Canada's Valet API.
 """
 
-import requests
-import pandas as pd
+
 
 def get_series_data(series, start_date, end_date):
     """
@@ -23,10 +22,11 @@ def get_series_data(series, start_date, end_date):
     """
 
 
-    url = f"https://www.bankofcanada.ca/valet/observations/{series}/json?start_date={start_date}&end_date={end_date}"
+    url = (f"https://www.bankofcanada.ca/valet/observations/{series}/json"
+            f"?start_date={start_date}&end_date={end_date}")
     desc_url = f"https://www.bankofcanada.ca/valet/series/{series}/json"
 
-    # return data observations and variable description 
+    # return data observations and variable description
     try:
         response = requests.get(url)
 
@@ -43,26 +43,28 @@ def get_series_data(series, start_date, end_date):
                     desc = response.json()['seriesDetails']['description']
 
                 else:
-                    print("Request error: {}".format(response.status_code))
+                    print(f"Request error: {response.status_code}")
 
             except:
                 print('Error: No response')
 
             df.columns = ['date', desc]
-            df.to_csv('api_data_{}.csv'.format(series))
+            df.to_csv(f"api_data_{series}.csv")
             return df
 
         else:
-            print("Request error: {}".format(response.status_code))
+            print(f"Request error: {response.status_code}")
 
     except:
         print('Error: No response')
-        return None
+
 
 
 if __name__ == '__main__':
     import argparse
-
+    import requests
+    import pandas as pd
+    
     parser = argparse.ArgumentParser()
     parser.add_argument('series', help='Series Name')
     parser.add_argument('start_date', help='Start Date (YYYY-MM-DD)')
